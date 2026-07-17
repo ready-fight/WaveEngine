@@ -1,0 +1,92 @@
+#include "Window.h"
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
+#include <stdexcept>
+
+namespace Wave {
+	Window::Window(int width, int height, const char* title)
+	{
+		if (!glfwInit())
+		{
+			throw std::runtime_error("Failed to initialize GLFW");
+		}
+
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+		m_window = glfwCreateWindow(
+			1280,
+			720,
+			"Wave Engine",
+			nullptr,
+			nullptr
+		);
+
+		if (!m_window)
+		{
+			glfwTerminate();
+			throw std::runtime_error("Failed to initialize GLFW");
+		}
+
+		glfwMakeContextCurrent(m_window);
+		glfwSwapInterval(1);
+
+		glewExperimental = GL_TRUE;
+
+		if (glewInit() != GLEW_OK)
+		{
+			glfwDestroyWindow(m_window);
+			glfwTerminate();
+
+			throw std::runtime_error("Failed to initialize GLEW");
+		}
+
+
+		glfwSetFramebufferSizeCallback(m_window,
+			[](GLFWwindow* window, int newWidth, int newHeight)
+			{
+				glViewport(0, 0, newWidth, newHeight);
+			}
+		);
+
+		int framebufferWidth;
+		int framebufferHeight;
+
+		glfwGetFramebufferSize(
+			m_window,
+			&framebufferWidth,
+			&framebufferHeight
+		);
+
+		glViewport(0, 0, framebufferWidth, framebufferHeight);
+	}
+
+	Window::~Window()
+	{
+		glfwDestroyWindow(m_window);
+		glfwTerminate();
+	}
+
+	bool Window::ShouldClose() const
+	{
+		return glfwWindowShouldClose(m_window);
+	}
+
+	void Window::ProcessEvents()
+	{
+		glfwPollEvents();
+
+		if(glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		{
+			glfwSetWindowShouldClose(m_window, true);
+		}
+	}
+
+	void Window::SwapBuffers()
+	{
+		glfwSwapBuffers(m_window);
+	}
+}
