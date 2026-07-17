@@ -89,4 +89,18 @@ namespace Wave {
 	{
 		glfwSwapBuffers(m_window);
 	}
+	float Window::GetAspectRatio() const
+	{
+		int width;
+		int height;
+
+		glfwGetFramebufferSize(m_window, &width, &height);
+
+		if (height == 0)
+		{
+			return 1.0f;
+		}
+
+		return static_cast<float>(width) / static_cast<float>(height);
+	}
 }

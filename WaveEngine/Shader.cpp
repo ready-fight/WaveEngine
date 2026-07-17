@@ -2,8 +2,12 @@
 
 #include <GL/glew.h>
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include <stdexcept>
 #include <string>
+
+
 namespace Wave {
 	Shader::Shader(const char* vertexSource, const char* fragmentSource)
 	{
@@ -55,6 +59,17 @@ namespace Wave {
 	void Shader::Unbind() const
 	{
 		glUseProgram(0);
+	}
+
+	void Shader::SetMatrix4(const char* name, const glm::mat4& matrix) const
+	{
+		const int location = glGetUniformLocation(m_program, name);
+		glUniformMatrix4fv(
+			location,
+			1,
+			GL_FALSE,
+			glm::value_ptr(matrix)
+		);
 	}
 
 	unsigned int Shader::Compile(unsigned int type, const char* source)

@@ -15,6 +15,7 @@ namespace Wave {
 		bool ShouldClose() const;
 		void ProcessEvents();
 		void SwapBuffers();
+		float GetAspectRatio() const;
 
 	private:
 		GLFWwindow* m_window = nullptr;

@@ -18,7 +18,7 @@ namespace Wave
 		{
 			m_window.ProcessEvents();
 
-			m_renderer.Render();
+			m_renderer.Render(m_window.GetAspectRatio());
 
 			m_window.SwapBuffers();
 		}

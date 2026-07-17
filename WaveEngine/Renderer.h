@@ -13,7 +13,7 @@ namespace Wave {
 		Renderer(const Renderer&) = delete;
 		Renderer& operator=(const Renderer&) = delete;
 
-		void Render();
+		void Render(float aspectRatio);
 
 	private:
 		Shader m_shader;
