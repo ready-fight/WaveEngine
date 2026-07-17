@@ -4,6 +4,8 @@
 
 #include <vector>
 
+#include <cstdint>
+
 namespace
 {
 	const char* VertexShaderSource = R"(
@@ -37,10 +39,18 @@ namespace
 			{{ 0.0f,  0.5f, 0.0f}}
 		};
 	}
+
+	std::vector<std::uint32_t> CreateTriangleIndices()
+	{
+		return
+		{
+			0, 1, 2
+		};
+	}
 }
 
 namespace Wave {
-	Renderer::Renderer() : m_shader(VertexShaderSource, FragmentShaderSource), m_mesh(CreateTriangleVertices())
+	Renderer::Renderer() : m_shader(VertexShaderSource, FragmentShaderSource), m_mesh(CreateTriangleVertices(), CreateTriangleIndices())
 	{
 	}
 

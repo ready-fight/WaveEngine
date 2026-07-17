@@ -2,6 +2,7 @@
 
 #include <glm/vec3.hpp>
 
+#include <cstdint>
 #include <vector>
 
 namespace Wave {
@@ -14,7 +15,7 @@ namespace Wave {
 	class Mesh
 	{
 	public:
-		explicit Mesh(const std::vector<Vertex>& vertices);
+		explicit Mesh(const std::vector<Vertex>& vertices, const std::vector<std::uint32_t> &indices);
 		~Mesh();
 
 		Mesh(const Mesh&) = delete;
@@ -25,7 +26,9 @@ namespace Wave {
 	private:
 		unsigned int m_vertexArray = 0;
 		unsigned int m_vertexBuffer = 0;
-		int m_vertexCount = 0;
+		unsigned int m_indexBuffer = 0;
+
+		int m_indexCount = 0;
 	};
 }
 
