@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Shader.h"
+#include "Mesh.h"
 
 namespace Wave {
 	class Renderer
@@ -16,9 +17,7 @@ namespace Wave {
 
 	private:
 		Shader m_shader;
-
-		unsigned int m_vertexArray = 0;
-		unsigned int m_vertexBuffer = 0;
+		Mesh m_mesh;
 	};
 }
 
