@@ -19,8 +19,8 @@ namespace Wave {
 		void Render(float aspectRatio, Camera& camera);
 
 	private:
-		Shader m_shader;
 		Model m_model;
+		Shader m_shader;
 	};
 }
 

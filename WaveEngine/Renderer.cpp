@@ -12,30 +12,55 @@
 namespace
 {
 	const char* VertexShaderSource = R"(
-        #version 460 core
+    #version 460 core
 
-        layout(location = 0) in vec3 position;
+    layout(location = 0) in vec3 position;
+    layout(location = 1) in vec3 normal;
 
-		uniform mat4 model;
-		uniform mat4 view;
-		uniform mat4 projection;
+	uniform mat4 model;
+	uniform mat4 view;
+	uniform mat4 projection;
 
-        void main()
-        {
-            gl_Position = projection * view * model * vec4(position, 1.0);
-        }
-    )";
+	out vec3 worldNormal;
+
+    void main()
+    {
+		worldNormal = mat3(transpose(inverse(model))) * normal;
+
+        gl_Position = projection * view * model * vec4(position, 1.0);
+    }
+)";
 
 	const char* FragmentShaderSource = R"(
-        #version 460 core
+    #version 460 core
 
-        out vec4 fragmentColor;
+    in vec3 worldNormal;
 
-        void main()
-        {
-            fragmentColor = vec4(0.9, 0.4, 0.2, 1.0);
-        }
-    )";
+    out vec4 fragmentColor;
+
+    void main()
+    {
+        vec3 normalizedNormal = normalize(worldNormal);
+
+        vec3 directionToLight = normalize(
+            vec3(0.5, 1.0, 0.3)
+        );
+
+        float diffuseAmount = max(
+            dot(normalizedNormal, directionToLight),
+            0.0
+        );
+
+        float lighting = 0.2 + diffuseAmount * 0.8;
+
+        vec3 baseColor = vec3(0.9, 0.4, 0.2);
+
+        fragmentColor = vec4(
+            baseColor * lighting,
+            1.0
+        );
+    }
+)";
 }
 
 namespace Wave {
@@ -54,19 +79,17 @@ namespace Wave {
 		glClearColor(0.1f, 0.15f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glm::mat4 model(1.0);
-
-		model = glm::rotate(model, glm::radians(-20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.05f));
-
-		const glm::mat4 view = camera.GetViewMatrix();
-
-		const glm::mat4 projection = camera.GetProjectMatrix(aspectRatio);
-
 		m_shader.Bind();
 
+		glm::mat4 model(1.0);
+		model = glm::rotate(model, glm::radians(-20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.05f));
 		m_shader.SetMatrix4("model", model);
+
+		const glm::mat4 view = camera.GetViewMatrix();
 		m_shader.SetMatrix4("view", view);
+
+		const glm::mat4 projection = camera.GetProjectMatrix(aspectRatio);
 		m_shader.SetMatrix4("projection", projection);
 
 		m_model.Draw();

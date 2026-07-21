@@ -28,7 +28,7 @@ namespace Wave {
 	{
 		Assimp::Importer importer;
 
-		const aiScene* scene = importer.ReadFile(filePath, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_PreTransformVertices);
+		const aiScene* scene = importer.ReadFile(filePath, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_PreTransformVertices | aiProcess_GenSmoothNormals);
 
 		if (scene == nullptr || scene->mRootNode == nullptr || (scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE))
 		{
@@ -62,12 +62,19 @@ namespace Wave {
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 		{
 			const aiVector3D& position = mesh->mVertices[i];
+			const aiVector3D& normal = mesh->mNormals[i];
+
 			vertices.push_back(
 				{
 					{
 						position.x,
 						position.y,
 						position.z
+					},
+					{
+						normal.x,
+						normal.y,
+						normal.z
 					}
 				}
 			);
