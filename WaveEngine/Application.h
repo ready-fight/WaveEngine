@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Window.h"
+#include "Camera.h"
 #include "Renderer.h"
+#include "Window.h"
 
 namespace Wave 
 {
@@ -18,6 +19,7 @@ namespace Wave
 
 	private:
 		Window m_window;
+		Camera m_camera;
 		Renderer m_renderer;
 	};
 }

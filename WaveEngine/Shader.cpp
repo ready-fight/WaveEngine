@@ -64,6 +64,7 @@ namespace Wave {
 	void Shader::SetMatrix4(const char* name, const glm::mat4& matrix) const
 	{
 		const int location = glGetUniformLocation(m_program, name);
+
 		glUniformMatrix4fv(
 			location,
 			1,

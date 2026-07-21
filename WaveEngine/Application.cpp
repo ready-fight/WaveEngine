@@ -4,7 +4,7 @@
 
 namespace Wave 
 {
-	Application::Application() : m_window(1280, 720, "Wave Engine")
+	Application::Application() : m_window(1280, 720, "Wave Engine"), m_camera(glm::vec3(1.5f, 1.2f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f))
 	{
 	}
 
@@ -18,7 +18,7 @@ namespace Wave
 		{
 			m_window.ProcessEvents();
 
-			m_renderer.Render(m_window.GetAspectRatio());
+			m_renderer.Render(m_window.GetAspectRatio(), m_camera);
 
 			m_window.SwapBuffers();
 		}

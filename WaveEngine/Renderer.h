@@ -1,9 +1,12 @@
 #pragma once
 
+#include "Model.h"
 #include "Shader.h"
-#include "Mesh.h"
 
 namespace Wave {
+
+	class Camera;
+
 	class Renderer
 	{
 	public:
@@ -13,11 +16,11 @@ namespace Wave {
 		Renderer(const Renderer&) = delete;
 		Renderer& operator=(const Renderer&) = delete;
 
-		void Render(float aspectRatio);
+		void Render(float aspectRatio, Camera& camera);
 
 	private:
 		Shader m_shader;
-		Mesh m_mesh;
+		Model m_model;
 	};
 }
 
